@@ -1,5 +1,5 @@
 import {initState} from "./state";
-
+import { compileToFunction } from "./compiler/index";
 
 export function initMixin(Vue) {
   Vue.prototype._init = function (options) {
@@ -11,11 +11,41 @@ export function initMixin(Vue) {
     // 初始化状态
     initState(vm);
     
-    // 初始化事件
+    // 如果传入了el属性，则挂载
+    if(vm.$options.el) {
+      vm.$mount(vm.$options.el);
+    }
     
-    // 初始化渲染
+  }
+  
+  Vue.prototype.$mount = function (el) {
+    const vm = this;
+    // id 唯一
+    el = document.querySelector(el);
     
-    // 调用beforeCreate钩子函数
+    // 获取真实dom
+    const options = vm.$options;
+    options.el = el;
     
+    // 先查找有无render方法
+    
+    // 没有render采用template
+    
+    // 没有template直接使用el的内容
+    
+    // 如果没有render方法，则将模板转换为render函数
+    if(!options.render) {
+      // 取模板
+      let template = options.template;
+      // 没有template但是有el
+      if(!template && el) {
+        template = el.outerHTML;
+      }
+      
+      // 将模板编译为render函数
+      console.log(template)
+      // 将template转化为render方法
+      options.render = compileToFunction(template);
+    }
   }
 }
