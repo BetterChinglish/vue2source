@@ -10,8 +10,21 @@
   <script>
     let vm = new Vue({
       el: '#app',
-      data: {
-        message: 'Hello Vue!'
+      data() {
+        return {
+          message: 'Hello Vue!',
+          name: 'zhangsan',
+          age: 18,
+          addressInfo: {
+            city: 'beijing',
+            street: 'chaoyang'
+          },
+          scores: [100, 90, 80, {
+            chinese: 100,
+            math: 90,
+            english: 80
+          }],
+        }
       }
     })
   </script>

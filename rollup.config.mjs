@@ -1,13 +1,8 @@
 import json from '@rollup/plugin-json';
-// import terser from '@rollup/plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
 import serve from 'rollup-plugin-serve';
 
-// rollup.config.mjs
-// ---cut-start---
-/** @type {import('rollup').RollupOptions} */
-// ---cut-end---
 export default {
 	input: 'src/main.js',
   output: [
@@ -22,7 +17,9 @@ export default {
     json(),
     resolve(),
     babel({
-      exclude: 'node_modules/**'
+      exclude: 'node_modules/**',
+      babelHelpers: 'bundled'
+      
     }),
     process.env.ENV === 'development' ? serve({
       open: true,
