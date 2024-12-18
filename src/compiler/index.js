@@ -1,36 +1,32 @@
-import {
-  ncname,
-  qnameCapture,
-  startTagOpen,
-  endTag,
-  attribute,
-  startTagClose,
-  defaultTagRE,
-} from './RegExp'
+import {parseHTML} from "./parser-html";
 
 export function compileToFunction(template) {
-  
   let root = parseHTML(template);
+  console.log(root);
   
-  console.log('compileToFunction', template);
   return function render() {
   
   }
 }
 
-function parseHTML(html) {
-  while(html) {
-    let textEnd = html.indexOf('<');
-    if(textEnd === 0) {
-      const startTagMatch = parseStartTag();
-      if(startTagMatch) {
-        start(startTagMatch.tagName, startTagMatch.attrs);
-      }
-      const endTagMatch = html.match(endTag);
-      if(endTagMatch) {
-        advance(endTagMatch[0].length);
-        end(endTagMatch[1]);
-      }
-    }
-  }
-}
+/*parseHTML*/
+// <div id="app">
+//   <p>hello</p>
+// </div>
+//  =>
+// let root = {
+//   tag: 'div',
+//   type: 1,
+//   children: [
+//     {
+//       tag: 'p',
+//       type: 1,
+//       children: [
+//         {
+//           text: 'hello',
+//           type: 3
+//         }
+//       ]
+//     }
+//   ]
+// }

@@ -51,7 +51,6 @@ function defineReactive(data, key, value) {
   observe(value);
   Object.defineProperty(data, key, {
     get() {
-      console.log('get', value)
       return value;
     },
     set(newValue) {
@@ -61,7 +60,6 @@ function defineReactive(data, key, value) {
       }
       // 直接将原有对象覆盖时，需要此行将新赋值的数据劫持
       observe(value);
-      console.log( 'set', newValue )
       value = newValue
     }
   })

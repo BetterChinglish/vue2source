@@ -43,7 +43,7 @@ export function initMixin(Vue) {
       }
       
       // 将模板编译为render函数
-      console.log(template)
+      
       // 将template转化为render方法
       options.render = compileToFunction(template);
     }

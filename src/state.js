@@ -2,9 +2,6 @@ import { observe } from "./observer";
 
 
 export function initState(vm) {
-  console.log(vm)
-  
-  
   const opts = vm.$options;
   
   // 属性、方法、数据、计算属性、watch
@@ -42,9 +39,6 @@ function initData(vm) {
   
   // 数据代理
   observe(data);
-  
-  
-  console.log(vm)
 }
 
 function initComputed() {}

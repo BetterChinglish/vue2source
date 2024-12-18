@@ -1,5 +1,5 @@
 // abc-abc
-export const ncname = `[a-zA-Z_][\\-\\.0-9_a-zA-Z${unicodeRegExp.source}]*`
+export const ncname = `[a-zA-Z_][\\-\\.0-9_a-zA-Z]*`
 
 // abc-abc:abc-abc
 export const qnameCapture = `((?:${ncname}\\:)?${ncname})`
