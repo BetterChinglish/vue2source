@@ -1,5 +1,7 @@
 import {parseHTML} from "./parser-html";
 
+import {defaultTagRE} from "./RegExp";
+
 function genProps(attrs) {
   let str = '';
   
@@ -39,13 +41,47 @@ function genProps(attrs) {
   return str;
 }
 
+function gen(node) {
+  // 元素标签, 则又回到与根节点一样的处理，直接递归
+  if(node.type === 1) {
+    return generate(node);
+  }
+  
+  // 文本标签
+  const text = node.text;
+  return `_v(${text})`
+}
+
+// 递归创建子节点字符串
+function genChildren(root) {
+  const children = root?.children || [];
+  
+  // [_c(xx, xxx, xxx), _c(xx), xxx]
+  // 没啥意义的判空, 但习惯
+  if(!children.length) {
+    return false;
+  }
+  
+  return `${
+    children.map(kid => {
+      return gen(kid)
+    }).join((', '))
+  }`
+  
+}
+
+// 根节点必是元素节点
 function generate(root) {
   console.log('generate: ', root)
   
-  let code = `_c("${
+  // 通过html的ast树生成字符串，保持类似如下格式，估计是为了方便执行，即生成可执行字符串代码
+  // _c(elementName, elementAttributes, elementChildren)
+  let code = `_c("${  // 标签名
     root.tag
-  }" , ${
+  }", ${  // 属性对象
     root.attrs.length ? genProps(root.attrs) : "undefined"
+  }${ // 节点的子节点
+    root.children?.length ? `, [ ${genChildren(root)} ]` : ''  // 如果有子节点就再去处理子节点, 补药忘了逗号
   })`;
   console.log('code: ', code)
   return code;
