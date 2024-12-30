@@ -51,7 +51,32 @@ function gen(node) {
   
   // 文本标签
   const text = node.text;
-  return `_v(${text})`
+  // 处理文本  hello {{ name }} your age: {{ age }} something else
+  let tokens = [];
+  let match, index;
+  let lastIndex = defaultTagRE.lastIndex = 0;
+  while (match = defaultTagRE.exec(text)) {
+    console.log('{{something}}匹配结果：', match);
+    // 匹配到的结果的开始位置
+    index = match.index;
+    // 如果大于，说明不是起始就是{{}}, 而是类似 something1 {{something2}}, 需要将something1先存下来
+    if(index > lastIndex) {
+      // something1是文本，需要拼接“”，使用JSON.stringfy， something2是变量，不要“”
+      tokens.push(JSON.stringify(text.slice(lastIndex, index)));
+    }
+    // 再将匹配到的{{something2}}放进来，something2是变量，不要“”
+    tokens.push(`_s(${match[1].trim()})`);
+    // 这里不能直接使用defaultTagRE.lastIndex, 因为最后匹配不到的时候defaultTagRE.lastIndex是字符串的长度，而不是{{}}结果的末尾
+    lastIndex = index + match[0].length;
+  }
+  
+  // 例如{{last something1}} something2上面的while是匹配的{{}}，那么这里的something2不会匹配到，也要放进来
+  if(lastIndex < text.length) {
+    // 最后没匹配到的多余的也是字符串，需要拼接“”
+    tokens.push(JSON.stringify(text.slice(lastIndex)));
+  }
+  
+  return `_v(${tokens.join('+')})`;
 }
 
 // 4
@@ -101,7 +126,7 @@ export function compileToFunction(template) {
   // 遇到 {{}} 模板语法则调用s方法将其内容执行获得最终字符串
   // 等等
   let code = generate(root);
-  
+  console.log(code)
   return function render() {
   
   }
