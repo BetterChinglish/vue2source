@@ -66,6 +66,7 @@ function genChildren(root) {
   }
   
   return `${
+    // 多个兄弟节点则遍历返回并使用逗号分割
     children.map(kid => {
       return gen(kid)
     }).join((', '))
