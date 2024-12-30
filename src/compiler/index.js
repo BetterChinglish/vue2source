@@ -2,6 +2,7 @@ import {parseHTML} from "./parser-html";
 
 import {defaultTagRE} from "./RegExp";
 
+// 3
 function genProps(attrs) {
   let str = '';
   
@@ -41,6 +42,7 @@ function genProps(attrs) {
   return str;
 }
 
+// 5
 function gen(node) {
   // 元素标签, 则又回到与根节点一样的处理，直接递归
   if(node.type === 1) {
@@ -52,6 +54,7 @@ function gen(node) {
   return `_v(${text})`
 }
 
+// 4
 // 递归创建子节点字符串
 function genChildren(root) {
   const children = root?.children || [];
@@ -70,10 +73,9 @@ function genChildren(root) {
   
 }
 
+// 2
 // 根节点必是元素节点
 function generate(root) {
-  console.log('generate: ', root)
-  
   // 通过html的ast树生成字符串，保持类似如下格式，估计是为了方便执行，即生成可执行字符串代码
   // _c(elementName, elementAttributes, elementChildren)
   let code = `_c("${  // 标签名
@@ -83,10 +85,11 @@ function generate(root) {
   }${ // 节点的子节点
     root.children?.length ? `, [ ${genChildren(root)} ]` : ''  // 如果有子节点就再去处理子节点, 补药忘了逗号
   })`;
-  console.log('code: ', code)
   return code;
 }
 
+
+// 1
 export function compileToFunction(template) {
   
   // 从html文本转为js对象描述html
