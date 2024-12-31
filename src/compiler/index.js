@@ -126,10 +126,10 @@ export function compileToFunction(template) {
   // 遇到 {{}} 模板语法则调用s方法将其内容执行获得最终字符串
   // 等等
   let code = generate(root);
-  console.log(code)
-  return function render() {
-  
-  }
+  // 使用with重定代码namespace
+  const renderFn = new Function(`with(this){ return ${code}}`);
+  console.log('render function:', renderFn)
+  return renderFn;
 }
 
 /*parseHTML*/
