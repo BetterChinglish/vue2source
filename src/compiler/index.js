@@ -56,7 +56,6 @@ function gen(node) {
   let match, index;
   let lastIndex = defaultTagRE.lastIndex = 0;
   while (match = defaultTagRE.exec(text)) {
-    console.log('{{something}}匹配结果：', match);
     // 匹配到的结果的开始位置
     index = match.index;
     // 如果大于，说明不是起始就是{{}}, 而是类似 something1 {{something2}}, 需要将something1先存下来
@@ -128,7 +127,6 @@ export function compileToFunction(template) {
   let code = generate(root);
   // 使用with重定代码namespace
   const renderFn = new Function(`with(this){ return ${code}}`);
-  console.log('render function:', renderFn)
   return renderFn;
 }
 
