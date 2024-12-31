@@ -13,25 +13,30 @@
   </div>
   <script src="/dist/umd/vue.js"></script>
   <script>
-    let vm = new Vue({
-      el: '#app',
-      data() {
-        return {
-          message: 'Hello Vue!',
-          name: 'zhangsan',
-          age: 18,
-          addressInfo: {
-            city: 'beijing',
-            street: 'chaoyang'
-          },
-          scores: [100, 90, 80, {
-            chinese: 100,
-            math: 90,
-            english: 80
-          }],
+    try {
+      let vm = new Vue({
+        el: '#app',
+        data() {
+          return {
+            message: 'Hello Vue!',
+            name: 'zhangsan',
+            age: 18,
+            addressInfo: {
+              city: 'beijing',
+              street: 'chaoyang'
+            },
+            scores: [100, 90, 80, {
+              chinese: 100,
+              math: 90,
+              english: 80
+            }],
+          }
         }
-      }
-    })
+      })
+    } catch (err) {
+      console.log(err)
+    }
+    
   </script>
 </body>
 </html>
