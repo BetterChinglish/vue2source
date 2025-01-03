@@ -24,6 +24,7 @@ export function renderMixin(Vue) {
     
     // 模板的render方法
     const { render } = vm.$options;
-    render.call(vm);
+    let vnode = render.call(vm);
+    return vnode;
   }
 }
