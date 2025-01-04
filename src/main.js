@@ -9,5 +9,6 @@ function Vue(options) {
 
 initMixin(Vue);
 renderMixin(Vue);
+lifecycleMixin(Vue);
 
 export default Vue;
