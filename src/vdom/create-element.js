@@ -1,6 +1,5 @@
 
-export function createElement(tag, data, children) {
-  console.log('createElement', tag, attrs, children)
+export function createElement(tag, data, ...children) {
   let key = data.key;
   if(key) {
     delete data.key;
