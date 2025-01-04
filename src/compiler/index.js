@@ -106,7 +106,7 @@ function generate(root) {
   let code = `_c("${  // 标签名
     root.tag
   }", ${  // 属性对象
-    root.attrs.length ? genProps(root.attrs) : "undefined"
+    root.attrs.length ? genProps(root.attrs) : "{}"
   }${ // 节点的子节点
     root.children?.length ? `, [ ${genChildren(root)} ]` : ''  // 如果有子节点就再去处理子节点, 补药忘了逗号
   })`;
