@@ -1,9 +1,13 @@
 import Watcher from "./observer/watcher";
-
+import { patch } from "./vdom/patch"
 
 export function lifecycleMixin(Vue) {
   Vue.prototype._update = function (vnode) {
     
+    const vm = this;
+    
+    // 使用虚拟节点创建真实dom并替换掉原有$el
+    vm.$el = patch(vm.$el, vnode)
   }
 }
 
