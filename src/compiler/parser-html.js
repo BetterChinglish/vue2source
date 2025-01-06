@@ -1,14 +1,15 @@
 import {attribute, endTag, startTagClose, startTagOpen} from "./RegExp";
 
 
-let root = null;
-let currentParent = null;
-let stack = [];
-
-const ELEMENT_TYPE = 1;
-const TEXT_TYPE = 3;
-
 export function parseHTML(html) {
+  
+  let root = null;
+  let currentParent = null;
+  let stack = [];
+  
+  const ELEMENT_TYPE = 1;
+  const TEXT_TYPE = 3;
+  
   while(html) {
     let textEnd = html.indexOf('<');
     // 标签，起始一定为 '<'
@@ -76,50 +77,51 @@ export function parseHTML(html) {
     }
   }
   
-}
-
-function start(tagName, attrs) {
-  // console.log('起始标签: ', tagName, '属性为: ', attrs);
-  let element = createASTElement(tagName, attrs);
-  if(!root) {
-    root = element;
-  }
-  currentParent = element;
-  stack.push(element);
   
-}
-
-function chars(text) {
-  // console.log('文本内容: ', text);
-  text = text.replace(/\s/g, '');
-  if(text) {
-    // 文本类型节点应该是叶子节点
-    currentParent.children.push({
-      text,
-      type: TEXT_TYPE
-    })
+  function start(tagName, attrs) {
+    // console.log('起始标签: ', tagName, '属性为: ', attrs);
+    let element = createASTElement(tagName, attrs);
+    if(!root) {
+      root = element;
+    }
+    currentParent = element;
+    stack.push(element);
+    
   }
-}
-
-function end(tagName) {
-  // 所有element都放入stack，每次遇到闭合标签时设定父子关系
-  // 当前关闭的元素
-  let element = stack.pop();
-  // 那么element的父元素则是此时stack最后一个元素
-  currentParent = stack[stack.length - 1];
-  // 如果有父元素则设置关系，并将当前关闭的element放入父元素的children中
-  if(currentParent) {
-    element.parent = currentParent;
-    currentParent.children.push(element);
+  
+  function chars(text) {
+    // console.log('文本内容: ', text);
+    text = text.replace(/\s/g, '');
+    if(text) {
+      // 文本类型节点应该是叶子节点
+      currentParent.children.push({
+        text,
+        type: TEXT_TYPE
+      })
+    }
   }
-}
-
-function createASTElement(tagName, attrs) {
-  return {
-    tag: tagName,
-    type: ELEMENT_TYPE,
-    children: [],
-    attrs,
-    parent: currentParent
+  
+  function end(tagName) {
+    // 所有element都放入stack，每次遇到闭合标签时设定父子关系
+    // 当前关闭的元素
+    let element = stack.pop();
+    // 那么element的父元素则是此时stack最后一个元素
+    currentParent = stack[stack.length - 1];
+    // 如果有父元素则设置关系，并将当前关闭的element放入父元素的children中
+    if(currentParent) {
+      element.parent = currentParent;
+      currentParent.children.push(element);
+    }
   }
+  
+  function createASTElement(tagName, attrs) {
+    return {
+      tag: tagName,
+      type: ELEMENT_TYPE,
+      children: [],
+      attrs,
+      parent: currentParent
+    }
+  }
+  
 }
