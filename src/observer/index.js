@@ -50,6 +50,9 @@ function defineReactive(data, key, value) {
   // 如果value是对象，则继续递归劫持
   observe(value);
   Object.defineProperty(data, key, {
+    // 这俩默认为true可以不写
+    // configurable: true,
+    // enumerable: true,
     get() {
       return value;
     },
