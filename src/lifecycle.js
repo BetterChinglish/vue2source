@@ -18,6 +18,7 @@ export function mountComponent(vm, el) {
   // 真实dom，用于挂载的节点
   vm.$el = el;
   
+  callHook(vm, 'beforeMount')
   // 渲染页面
   let updateComponent = () => { // 渲染或更新都使用此方法
     // 获取虚拟dom，需要去实现_c _v _s
@@ -29,4 +30,18 @@ export function mountComponent(vm, el) {
   // 渲染watcher，每个组件都有一个watcher
   // true表示是一个渲染watcher
   new Watcher(vm, updateComponent, () => {}, true);
+  callHook(vm, 'mounted');
+}
+
+export function callHook(vm, hookName) {
+  const handles = vm.$options[hookName];
+  if(handles) {
+    if(Array.isArray(handles)) {
+      handles.forEach(handle => {
+        handle.call(vm);
+      })
+    } else {
+      handles.call(vm);
+    }
+  }
 }
