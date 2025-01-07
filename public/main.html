@@ -31,6 +31,18 @@
               english: 80
             }],
           }
+        },
+        beforeCreate() {
+          console.log('my beforeCreate')
+        },
+        beforeMount() {
+          console.log('my beforeMount')
+        },
+        mounted() {
+          console.log('my mounted',this)
+        },
+        created() {
+          console.log('my created', this.age)
         }
       })
     } catch (err) {
