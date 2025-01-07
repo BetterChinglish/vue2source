@@ -1,6 +1,7 @@
 
 import {def, isObject} from '../utils';
 import { arrayMethods } from './array';
+import { Dep } from "./dep";
 
 export function observe(data) {
   // 初次进来，是vm._data，是一个对象, 后续再进来可能是常量、对象、数组等
@@ -47,6 +48,9 @@ class Observer {
 }
 
 function defineReactive(data, key, value) {
+  
+  let dep = new Dep();
+  
   // 如果value是对象，则继续递归劫持
   observe(value);
   Object.defineProperty(data, key, {
@@ -54,16 +58,21 @@ function defineReactive(data, key, value) {
     // configurable: true,
     // enumerable: true,
     get() {
+      console.log('取值');
+      if(Dep.target) {
+        dep.depend();
+      }
       return value;
     },
     set(newValue) {
-      
+      console.log('改值')
       if(newValue === value) {
         return;
       }
       // 直接将原有对象覆盖时，需要此行将新赋值的数据劫持
       observe(value);
       value = newValue
+      dep.notify();
     }
   })
 }

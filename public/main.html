@@ -45,6 +45,14 @@
           console.log('my created', this.age)
         }
       })
+      
+      
+      setTimeout(() => {
+        // 当修改值的时候，需要重新渲染
+        vm.age = 1000;
+        // vm._update(vm.$options.render())
+      }, 2000);
+      
     } catch (err) {
       console.log(err)
     }
