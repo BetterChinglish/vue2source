@@ -57,6 +57,41 @@ let vm = new Vue({
 </script>
 ```
 
+转为html的ast语法树其实就是解析根div，将其转化为类似下面的结构，以用于后续的render方法的构造
+```js
+const root = {
+  tag: 'div',
+  nodeType: 1,
+  text: "",
+  data: {
+    id: "app",
+    style: {
+      color: "red",
+      fontSize: "14px",
+      backgroundColor: "blue"
+    },
+    class: "test-class"
+  },
+  children:[
+    {
+      tag: "",
+      nodeType: 3,
+      text: "name: {{name}}; age: {{age}}",
+      data: {},
+      children: [],
+    },
+    {
+      tag: "p",
+      // ....
+    }
+  ]
+}
+```
+
+常见的思路就是使用栈读取开始标签入栈, 遇到对应的闭合标签时弹出，
+
+配合正则，对字符串步进匹配即可
+
 ## 由html的ast语法树到render方法
 
 
