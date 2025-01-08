@@ -5,11 +5,13 @@ export class Dep {
     this.id = id++;
     this.subs = [];
   }
-  depend() {
-    this.subs.push(Dep.target);
-    
+  addSub(watcher) {
+    this.subs.push(watcher);
   }
-                                                                                                                                                                                                                                                notify() {
+  depend() {
+    Dep.target.addDep(this);    
+  }
+  notify() {
     this.subs.forEach(watcher => {
       watcher.update();
     })

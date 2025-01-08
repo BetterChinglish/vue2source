@@ -58,14 +58,15 @@ function defineReactive(data, key, value) {
     // configurable: true,
     // enumerable: true,
     get() {
-      console.log('取值');
+      // console.log('取值');
       if(Dep.target) {
         dep.depend();
       }
+      console.log(dep.subs)
       return value;
     },
     set(newValue) {
-      console.log('改值')
+      // console.log('改值')
       if(newValue === value) {
         return;
       }

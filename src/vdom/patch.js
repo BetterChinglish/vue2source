@@ -46,8 +46,6 @@ function updateProperties(vnode) {
   const props = vnode.data || {};
   const el = vnode.el;
   
-  console.log('props: ', props, 'el:', el);
-  
   for(let key in props) {
     // 样式处理
     if(key === 'style') {

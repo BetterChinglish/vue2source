@@ -5,7 +5,7 @@ export function initGlobalAPI(Vue) {
   
   Vue.options = {};
   
-  console.dir(Vue);
+  // console.dir(Vue);
   
   
   Vue.mixin = function (mixin) {
@@ -15,23 +15,23 @@ export function initGlobalAPI(Vue) {
   Vue.mixin({
     a: 1,
     mounted() {
-      console.log('mounted 1')
+      // console.log('mounted 1')
     }
   })
   Vue.mixin({
     b: 1,
     mounted() {
-      console.log('mounted 2')
+      // console.log('mounted 2')
     }
   })
   Vue.mixin({
     c: 1,
     mounted() {
-      console.log('mounted 3')
+      // console.log('mounted 3')
     }
   })
   
-  console.log(Vue.options)
+  // console.log(Vue.options)
   
   
 }
