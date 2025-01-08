@@ -10,7 +10,7 @@
     name: {{name}}; age: {{age}}
     <p>test</p>
     <div>{{message}}</div>
-    <div>{{scores}}</div>
+    <div>{{scores[0]}}</div>
   </div>
   <script src="/dist/umd/vue.js"></script>
   <script>
@@ -26,7 +26,7 @@
               city: 'beijing',
               street: 'chaoyang'
             },
-            scores: [100, 90, 80, {
+            scores: [[1],100, 90, 80, {
               chinese: 100,
               math: 90,
               english: 80
@@ -50,7 +50,7 @@
       
       setTimeout(() => {
         // 当修改值的时候，需要重新渲染
-        vm.scores.push(999, 998, 997)
+        vm.scores[0].push(1,2,3)
         // vm._update(vm.$options.render())
       }, 2000);
       

@@ -67,6 +67,10 @@ function defineReactive(data, key, value) {
         // 值是对象，将依赖放入对象的dep(其实是针对array类型，因为对象类型的属性已经设置过dep了）
         if(childOb) {
           childOb.dep.depend();
+          if(Array.isArray(value)) {
+            // value是已经用observe包装过了的（如果里面还是数组的话）
+            dependArray(value);
+          }
         }
       }
       console.log(dep.subs)
@@ -85,3 +89,13 @@ function defineReactive(data, key, value) {
   })
 }
 
+function dependArray(arr) {
+  // 此时arr已经被observer包装过了，里面都有dep
+  for(const item of arr) {
+    item.__ob__ && item.__ob__.dep.depend();
+    // 如果数组中的元素还是数组的话
+    if(Array.isArray(item)) {
+      dependArray(item)
+    }
+  }
+}
