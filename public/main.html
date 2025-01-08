@@ -10,6 +10,7 @@
     name: {{name}}; age: {{age}}
     <p>test</p>
     <div>{{message}}</div>
+    <div>{{scores}}</div>
   </div>
   <script src="/dist/umd/vue.js"></script>
   <script>
@@ -49,7 +50,7 @@
       
       setTimeout(() => {
         // 当修改值的时候，需要重新渲染
-        vm.age = 1000;
+        vm.scores.push(999, 998, 997)
         // vm._update(vm.$options.render())
       }, 2000);
       

@@ -43,6 +43,8 @@ methods.forEach(method => {
       ob.observeArray(inserted);
     }
     
+    // 发生改变通知watcher
+    ob.dep.notify();
     // 原生返回作为重写返回
     return result;
   }

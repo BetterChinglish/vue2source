@@ -15,6 +15,7 @@ export function observe(data) {
 class Observer {
   
   constructor(data) {
+    this.dep = new Dep();
     // 数组的处理
     // 数组不要对索引进行劫持，因为会导致性能问题
     if(Array.isArray(data)) {
@@ -48,11 +49,13 @@ class Observer {
 }
 
 function defineReactive(data, key, value) {
-  
+  // 对象属性
   let dep = new Dep();
   
+  // 初次进来vm.data是个对象，会走一遍Observe，如果value是对象则继续走，如果是数组的话则需要收集他的依赖
+  let childOb = observe(value);
+  
   // 如果value是对象，则继续递归劫持
-  observe(value);
   Object.defineProperty(data, key, {
     // 这俩默认为true可以不写
     // configurable: true,
@@ -61,6 +64,10 @@ function defineReactive(data, key, value) {
       // console.log('取值');
       if(Dep.target) {
         dep.depend();
+        // 值是对象，将依赖放入对象的dep(其实是针对array类型，因为对象类型的属性已经设置过dep了）
+        if(childOb) {
+          childOb.dep.depend();
+        }
       }
       console.log(dep.subs)
       return value;
