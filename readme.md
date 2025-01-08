@@ -123,12 +123,114 @@ renderStr = `_c(
 const renderFunction = new Function(`with(this){${renderStr}}`)
 ```
 通过with(this)，以及重定向this的call或apply或bind，可以将renderStr中的命名空间修改到vm上，这样_s就能直接访问到元素
-
-注意刚刚案例中的renderStr的  `_v("name: " + _s(name) + "; age: " + _s(age))`, _s中的name与age是没有双引号的
 ```js
 renderFunction.call(vm)
 ```
+注意刚刚案例中的renderStr的  `_v("name: " + _s(name) + "; age: " + _s(age))`
+
+_s中的name与age是没有双引号的，也就是说他们将被以变量的方式解析出来后再传入_s方法
 
 由此renderFn便生成完成
-## 监听收集相关
 
+
+## 响应式原理相关
+render方法生成完成, 执行完后得到新dom替换页面挂载节点, 便完成了首次渲染
+
+但响应式还没有实现
+
+响应式的实现依赖两个类
+- Dep
+- Watcher
+
+在执行render之前，为这个vm实例new一个watcher，并使用Dep.target暂时指向这个watcher
+```js
+
+// 将render交给watcher执行
+new Watcher(vm.render)
+
+// 简化的watcher
+class Watcher{
+  constructor(render) {
+    this.render = render;
+    this.get();
+  }
+  
+  get() {
+    // 用Dep.target存储这个watcher
+    Dep.target = this;
+    // 执行render
+    this.render();
+    // 置为null
+    Dep.target = null;
+  }
+}
+```
+
+那么watcher就相当于对应一个vm的渲染
+
+那就简单了，当这个vm里的某个属性发生改变的时候，我们再执行这个watcher的render，那么vm对应的dom就刷新了
+
+对vm的data的属性进行observe重写的时候，我们重定义属性的get与set, 并为这个属性创建一个dep
+```js
+function defineReactive(data, key, value) {
+  let dep = new Dep();
+  Object.defineProperty(data, key, {
+    get() {
+      if(Dep.target) {
+        dep.depend();
+      }
+      return value;
+    },
+    set(newValue) {
+      value = newValue
+      dep.notify();
+    }
+  })
+}
+```
+
+结合首次执行render的代码
+```js
+    // 用Dep.target存储这个watcher
+    Dep.target = this;
+    // 执行render
+    this.render();
+    // 置为null
+    Dep.target = null;
+```
+Dep.target先赋值这个vm的watcher
+
+然后执行render
+
+render执行的时候会执行_s方法, 期间会访问vm的data属性, 也就是属性的get方法被触发
+```js
+Object.defineProperty(data, key, {
+    get() {
+      // 存了个watcher
+      if(Dep.target) {
+        // 保存这个watcher
+        dep.depend();
+      }
+      return value;
+    }
+  })
+```
+这个属性的dep会将watcher存下来
+
+然后页面渲染完成
+
+Dep.target = null
+
+随后我们在页面操作, 引起vm的data发生改变
+
+触发属性的set方法
+```js
+set(newValue) {
+  value = newValue
+  dep.notify();
+}
+```
+
+执行dep.notify(), 去通知所有存下来的watcher重新执行render方法刷新页面
+
+如上是vue2响应式的基本原理。
