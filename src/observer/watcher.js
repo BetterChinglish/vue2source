@@ -37,21 +37,16 @@ class Watcher {
 
 let queue = [];
 let has = {}
-let timer = false;
 function queueWatcher(watcher) {
   const id = watcher.id;
   if(!has[id]) {
     queue.push(watcher);
     has[id] = true;
-    if(!timer) {
-      timer = true;
-      setTimeout(() => {
-        queue.forEach(watcher => watcher.run())
-        queue = [];
-        has = {};
-        timer = false;
-      }, 0)
-    }
+    setTimeout(() => {
+      queue.forEach(watcher => watcher.run())
+      queue = [];
+      has = {};
+    }, 0)
   }
 }
 
