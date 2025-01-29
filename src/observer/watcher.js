@@ -1,4 +1,6 @@
-import { pushTarget, popTarget } from './dep'
+import { pushTarget, popTarget } from './dep';
+import { queueWatcher } from './scheduler';
+
 
 let id = 0;
 
@@ -28,6 +30,7 @@ class Watcher {
     popTarget();
   }
   update() {
+    console.log('update');
     queueWatcher(this);
   }
   run() {
@@ -35,20 +38,7 @@ class Watcher {
   }
 }
 
-let queue = [];
-let has = {}
-function queueWatcher(watcher) {
-  const id = watcher.id;
-  if(!has[id]) {
-    queue.push(watcher);
-    has[id] = true;
-    setTimeout(() => {
-      queue.forEach(watcher => watcher.run())
-      queue = [];
-      has = {};
-    }, 0)
-  }
-}
+
 
 
 export default Watcher;

@@ -46,14 +46,18 @@
           // console.log('my created', this.age)
         }
       })
-      
-      
-      setTimeout(() => {
-        // 当修改值的时候，需要重新渲染
-        vm.scores[0].push(1,2,3)
-        // vm._update(vm.$options.render())
-      }, 2000);
-      
+
+
+      // 当修改值的时候，需要重新渲染
+      vm.scores[0].push(2);
+      vm.scores[0].push(3);
+      vm.scores[0].push(4);
+
+      vm.$nextTick(() => {
+        console.log(vm.$el.innerHTML);
+      })
+
+
     } catch (err) {
       console.log(err)
     }
