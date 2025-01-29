@@ -1,5 +1,4 @@
-import { mergeOptions } from '../utils/index'
-
+import initGlobalMixinApi from './mixin';
 // 初始化全局生命周期方法
 export function initGlobalAPI(Vue) {
   
@@ -8,10 +7,10 @@ export function initGlobalAPI(Vue) {
   // console.dir(Vue);
   
   // 初始化全局api
-  Vue.mixin = function (mixin) {
-    // 混入的时候将属性合并到options上
-    this.options = mergeOptions(this.options, mixin);
-  }
+  initGlobalMixinApi(Vue);
+
+
+
   
   // Vue.mixin({
   //   a: 1,
