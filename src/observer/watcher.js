@@ -29,8 +29,10 @@ class Watcher {
     this.getter();
     popTarget();
   }
+  // dep通知watcher更新时，会调用update方法
   update() {
     console.log('update');
+    // 重复watcher只放一次执行一次，避免多次相同watcher的render方法重复执行
     queueWatcher(this);
   }
   run() {
