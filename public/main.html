@@ -6,60 +6,21 @@
   <title>Document</title>
 </head>
 <body>
-  <div id="app" style="color: red; font-size:     14px;background-color: blue;" class="test-class">
-    name: {{name}}; age: {{age}}
-    <p>test</p>
-    <div>{{message}}</div>
-    <div>{{scores[0]}}</div>
+  <div id="app">
+    <my-component></my-component>
   </div>
   <script src="/dist/umd/vue.js"></script>
   <script>
     try {
+      Vue.component('my-component', {
+        template: '<div>My Component</div>'
+      });
+
       let vm = new Vue({
-        el: '#app',
-        data() {
-          return {
-            message: 'Hello Vue!',
-            name: 'zhangsan',
-            age: 18,
-            addressInfo: {
-              city: 'beijing',
-              street: 'chaoyang'
-            },
-            scores: [[1],100, 90, 80, {
-              chinese: 100,
-              math: 90,
-              english: 80
-            }],
-          }
-        },
-        beforeCreate() {
-          // console.log('my beforeCreate')
-        },
-        beforeMount() {
-          // console.log('my beforeMount')
-        },
-        mounted() {
-          // console.log('my mounted',this)
-        },
-        created() {
-          // console.log('my created', this.age)
-        }
-      })
-
-
-      // 当修改值的时候，需要重新渲染
-      vm.scores[0].push(2);
-      vm.scores[0].push(3);
-      vm.scores[0].push(4);
-
-      vm.$nextTick(() => {
-        console.log(vm.$el.innerHTML);
-      })
-
-
-    } catch (err) {
-      console.log(err)
+        el: '#app'
+      });
+    } catch (error) {
+      console.error(error);
     }
     
   </script>
