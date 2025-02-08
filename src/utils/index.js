@@ -40,6 +40,22 @@ LIFECYCLE_HOOKS.forEach(hookName => {
   strategy[hookName] = mergeHook;
 })
 
+function mergeAssets(parentVal, childVal) {
+  // 先复制父组件的
+  const res = Object.create(parentVal);
+  
+  // 子组件有的使用子组件覆盖掉原来的
+  if(childVal) {
+    for (let key in childVal) {
+      res[key] = childVal[key]
+    }
+  }
+  
+  return res;
+}
+
+strategy.components = mergeAssets;
+
 function mergeHook(parentVal, childVal) {
   // 全搞成数组
   if(childVal) {
@@ -54,8 +70,9 @@ function mergeHook(parentVal, childVal) {
 }
 
 export function mergeOptions(parent, child) {
+  // 合并后的options
   const options = {};
-  
+  // parent与child所有的key拿出来遍历, set保证所有字段key只遍历一次(parent与child都有的key)
   [...new Set([...Object.keys(parent), ...Object.keys(child)])].forEach(key => {
     if(strategy[key]) {
       options[key] = strategy[key](parent[key], child[key])
