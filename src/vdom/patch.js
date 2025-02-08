@@ -31,7 +31,7 @@ function createElm(vnode) {
     updateProperties(vnode);
     
     // 递归创建子dom
-    children.forEach(child => {
+    children?.forEach(child => {
       vnode.el.appendChild(createElm(child))
     })
   } else {
