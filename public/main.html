@@ -12,13 +12,23 @@
   <script src="/dist/umd/vue.js"></script>
   <script>
     try {
-      Vue.component('my-component', {
+      Vue.component('my-component1', {
         template: '<div>My Component</div>'
       });
 
       let vm = new Vue({
-        el: '#app'
+        el: '#app',
+        // 更改组件合并策略，先找自己的，再找全局的
+        components: {
+          'my-component2': {
+            template: '<div>My Component</div>'
+          }
+        }
       });
+      
+      console.dir(Vue);
+      console.log(vm);
+      
     } catch (error) {
       console.error(error);
     }
