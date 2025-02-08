@@ -3,6 +3,18 @@ export function isObject(data) {
   return typeof data === 'object' && data !== null
 }
 
+export const isReservedTag = (tagName) => {
+  let originalElement = [
+    'p',
+    'div',
+    'span',
+    'input',
+    'button',
+  ]
+  
+  return originalElement.includes(tagName);
+}
+
 export function def(data, key, value) {
   Object.defineProperty(data, key, {
     value,
@@ -50,7 +62,6 @@ function mergeAssets(parentVal, childVal) {
       res[key] = childVal[key]
     }
   }
-  
   return res;
 }
 

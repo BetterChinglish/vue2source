@@ -6,11 +6,11 @@ export function renderMixin(Vue) {
   // _v 文本
   // _s 表达式转化为string {{express}}
   Vue.prototype._c = function () {
-    return createElement(...arguments);
+    return createElement(this, ...arguments);
   }
   
   Vue.prototype._v = function (text) {
-    return createTextNode(text);
+    return createTextNode(this, text);
   }
   
   Vue.prototype._s = function (val) {
