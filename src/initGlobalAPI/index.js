@@ -10,8 +10,6 @@ export function initGlobalAPI(Vue) {
   
   Vue.options = {};
   
-  // console.dir(Vue);
-  
   // 初始化全局api
   initGlobalMixinApi(Vue);
 
