@@ -20,8 +20,8 @@ export default function (Vue) {
     Sub.prototype = Object.create(this.prototype);
     // 构造方法改回Sub
     Sub.prototype.constructor = Sub;
-    
     Sub.options = mergeOptions(this.options, extendOptions);
+    
     // mxin use component
     // Sub.mixin = this.mixin;
     

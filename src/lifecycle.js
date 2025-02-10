@@ -22,6 +22,7 @@ export function mountComponent(vm, el) {
   // 渲染页面
   let updateComponent = () => { // 渲染或更新都使用此方法
     // 获取虚拟dom，需要去实现_c _v _s
+    // 子组件的_render方法将直接使用传入的template配置
     const virtualDom = vm._render();
     // 创建真实节点
     vm._update(virtualDom);

@@ -79,7 +79,6 @@ export function parseHTML(html) {
   
   
   function start(tagName, attrs) {
-    // console.log('起始标签: ', tagName, '属性为: ', attrs);
     let element = createASTElement(tagName, attrs);
     if(!root) {
       root = element;
@@ -90,7 +89,6 @@ export function parseHTML(html) {
   }
   
   function chars(text) {
-    // console.log('文本内容: ', text);
     text = text.replace(/\s/g, '');
     if(text) {
       // 文本类型节点应该是叶子节点

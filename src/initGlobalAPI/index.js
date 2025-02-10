@@ -27,6 +27,7 @@ export function initGlobalAPI(Vue) {
 
   // 注册component、directive、filter方法
   initAssetRegisters(Vue);
+  console.dir(Vue)
 
 
 
