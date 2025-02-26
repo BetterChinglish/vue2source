@@ -288,3 +288,44 @@ set(newValue) {
 
 #### 1. 新老节点都有子节点
 
+对于这种情况，vue2的做法是将新老节点都给个两个指针，一个指向第一个节点，一个指向最后一个，一共四个节点
+```
+// 指针
+oldNodeListStart-oldNodeListEnd
+// 对应节点
+oldStartNode-oldEndNode
+
+// 指针
+newNodeListStart-newNodeListEnd
+// 对应节点
+newStartNode-newEndNode
+```
+
+后续操作无论怎么移动指针,对应节点都是指指针当前对应元素 
+
+##### 头头
+oldNodeListStart如果与newNodeListStart相同，则复用，并将这俩指针往后移动
+
+##### 尾尾
+oldNodeListEnd如果与newNodeListEnd相同，则复用，并将两指针往前移动
+
+##### 头尾
+oldNodeListStart如果与newNodeListEnd相同，则复用，
+
+并将oldStartNode移动到oldNodeListEnd后
+
+再将oldNodeListStart往后移动一个，newNodeListEnd往前移动一个
+
+##### 尾头
+类似头尾
+
+
+##### 上述均不符合
+需要一个map，key为node的key+tag，value为oldNodeList的节点
+
+查找newStartNode是否在oldNodeList中存在
+> 如果不存在则创建并放在oldNodeListStart前面，并将newStartNode往后移动
+> 
+> 如果存在则将其移动到oldNodeListStart前面,并将newStartNode往后移动
+
+
